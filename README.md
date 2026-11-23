@@ -16,15 +16,17 @@ This architecture separates **real-time scoring** from **asynchronous investigat
 flowchart TD
     A[Incoming Transaction Event] --> B[Tier 1: LightGBM Scorer + SHAP]
     B --> C{Risk Score Routing}
-    C -->|"< 0.45 (Low Risk)"| D[Immediate Approve]
-    C -->|"> 0.85 (High Risk)"| E[Immediate Block]
-    C -->|"0.45 – 0.85 (Gray Area)"| F[Tier 2: Context Retriever]
+    C -->|Low Risk, score under 0.45| D[Immediate Approve]
+    C -->|High Risk, score over 0.85| E[Immediate Block]
+    C -->|Gray Area, 0.45 to 0.85| F[Tier 2: Context Retriever]
     F --> G[(User Velocity & Device History)]
     F --> H[(Merchant Risk & Rule Hits)]
     G & H --> I[Tier 3: Schema-Enforced LLM Triage]
     I --> J[Structured JSON Output + SAR Narrative]
     J --> K[Analyst Queue / Step-Up Auth]
-    J -.-> L[Eval Harness: Grounding & Hallucination Checks]
+    J -.-> L[Eval Harness: Grounding Checks]
+```
+
 Example Triage Output
 Given a borderline transaction (risk_score: 0.68) flagged for unusual cross-border velocity and a new device fingerprint, the triage agent produces deterministic JSON:
 
