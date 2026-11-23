@@ -1,0 +1,20 @@
+[project]
+name = "hybrid-llm-fraud-triage"
+version = "0.1.0"
+description = "Hybrid LightGBM + SHAP + LLM fraud triage pipeline"
+requires-python = ">=3.11"
+dependencies = [
+"joblib>=1.4.0",
+"lightgbm>=4.5.0",
+"numpy>=1.26.0",
+"openai>=1.50.0",
+"pandas>=2.2.0",
+"pyarrow>=17.0.0",
+"pydantic>=2.9.0",
+"shap>=0.46.0",
+]
+
+[dependency-groups]
+dev = [
+"pytest>=8.3.0",
+]

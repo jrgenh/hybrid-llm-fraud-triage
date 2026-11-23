@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+.pytest_cache/
+*.parquet
+.env
+copy_files_from_gemini.sh
+Notes.txt
+*~
