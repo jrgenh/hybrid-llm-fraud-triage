@@ -48,20 +48,25 @@ JSON
 
 ##Quickstart
 
-Bash
-
 ### 1. Install dependencies
+```bash
 uv sync
+```
 
 ### 2. Generate synthetic transaction logs & historical user baselines
+```bash
 uv sync --group dev
 PYTHONPATH=. uv run python data/synthetic_generator.py --samples 5000 --fraud-rate 0.04
+```
 
 ### 3. Run the grounding and latency evaluation suite
+```bash
 PYTHONPATH=. uv run pytest evals/
+```
 
 ### 4. Run triage
+```bash
 PYTHONPATH=. uv run python -m src.run_triage
-
+```
 
 
