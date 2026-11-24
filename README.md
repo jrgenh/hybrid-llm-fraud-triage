@@ -30,6 +30,7 @@ flowchart TD
 Example Triage Output
 Given a borderline transaction (risk_score: 0.68) flagged for unusual cross-border velocity and a new device fingerprint, the triage agent produces deterministic JSON:
 
+```json
 JSON
 {
   "transaction_id": "tx_98412a",
@@ -43,19 +44,23 @@ JSON
   ],
   "sar_narrative": "Cardholder initiated a $1,420.00 electronics purchase from an unrecognized device 1,850 km from their historical billing cluster, following two low-dollar authorization probes within 15 minutes. Pattern aligns with credential-stuffing Account Takeover (ATO). Recommend 3DS/OTP step-up challenge prior to settlement."
 }
-Quickstart
+```
+
+##Quickstart
+
 Bash
-# 1. Install dependencies
+
+### 1. Install dependencies
 uv sync
 
-# 2. Generate synthetic transaction logs & historical user baselines
+### 2. Generate synthetic transaction logs & historical user baselines
 uv sync --group dev
 PYTHONPATH=. uv run python data/synthetic_generator.py --samples 5000 --fraud-rate 0.04
 
-# 3. Run the grounding and latency evaluation suite
+### 3. Run the grounding and latency evaluation suite
 PYTHONPATH=. uv run pytest evals/
 
-# 4. Run triage
+### 4. Run triage
 PYTHONPATH=. uv run python -m src.run_triage
 
 
