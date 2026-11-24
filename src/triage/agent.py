@@ -55,6 +55,7 @@ class LLMFraudTriageAgent:
         )
 
     def triage(self, context: TransactionContext) -> FraudTriageDecision:
+        # print("   --- running triage() in agent.py " + str(context)[0:100])
         response = self.client.responses.parse(
             model=self.model,
             instructions=SYSTEM_PROMPT,

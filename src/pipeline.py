@@ -22,8 +22,8 @@ class HybridFraudPipeline:
         self,
         scorer: FraudTabularScorer,
         triage_agent: TriageAgent,
-        low_threshold: float = 0.45,
-        high_threshold: float = 0.85,
+        low_threshold: float = 0.45,     ### overwritten
+        high_threshold: float = 0.85,    ### overwritten
     ) -> None:
         if not (0.0 <= low_threshold < high_threshold <= 1.0):
             raise ValueError("Thresholds must satisfy 0.0 <= low_threshold < high_threshold <= 1.0")
@@ -54,9 +54,16 @@ class HybridFraudPipeline:
         scored_df = self.scorer.score_dataframe(df)
         results: list[TriageRouteResult] = []
 
+        line_cnt: int = -1
         for _, row in scored_df.iterrows():
+            line_cnt += 1
+            
             score = float(row["ml_risk_score"])
             tx_id = str(row["transaction_id"])
+
+            # if (line_cnt < 50):
+            if ((score > 0) and (score < 1)):
+                print('   --- in process_dataframe() in pipeline.py ' + ' line_cnt: ' + str(line_cnt) + '  score: ' + str(score) + '  low_threshold: ' + str(self.low_threshold))
 
             if score < self.low_threshold:
                 results.append(
@@ -78,6 +85,7 @@ class HybridFraudPipeline:
                 )
             else:
                 ctx = self._row_to_context(row)
+                print("   --- running in process_dataframe() in pipeline.py " + str(ctx)[0:100])
                 decision = self.triage_agent.triage(ctx)
                 results.append(
                     TriageRouteResult(
@@ -88,5 +96,7 @@ class HybridFraudPipeline:
                         decision=decision,
                     )
                 )
+
+        print('   --- final line_cnt: ' + str(line_cnt))
 
         return results

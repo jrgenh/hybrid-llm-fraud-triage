@@ -66,9 +66,9 @@ if __name__ == "__main__":
     parser.add_argument("--out", type=str, default="data/transactions.parquet")
     args = parser.parse_args()
 
-out_path = Path(args.out)
-out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path = Path(args.out)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
 
-df = generate_transactions(n_samples=args.samples, fraud_rate=args.fraud_rate)
-df.to_parquet(out_path, index=False)
-print(f"Saved {len(df)} transactions ({df['is_fraud'].sum()} fraud) to {out_path}")
+    df = generate_transactions(n_samples=args.samples, fraud_rate=args.fraud_rate)
+    df.to_parquet(out_path, index=False)
+    print(f"Saved {len(df)} transactions ({df['is_fraud'].sum()} fraud) to {out_path}")
