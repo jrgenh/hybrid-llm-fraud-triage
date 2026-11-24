@@ -50,11 +50,13 @@ uv sync
 
 # 2. Generate synthetic transaction logs & historical user baselines
 uv sync --group dev
-# PYTHONPATH=. uv run pytest evals/
-python data/synthetic_generator.py --samples 5000 --fraud-rate 0.04
 PYTHONPATH=. uv run python data/synthetic_generator.py --samples 5000 --fraud-rate 0.04
 
 # 3. Run the grounding and latency evaluation suite
 PYTHONPATH=. uv run pytest evals/
+
+# 4. Run triage
+PYTHONPATH=. uv run python -m src.run_triage
+
 
 
